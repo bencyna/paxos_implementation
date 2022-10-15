@@ -7,18 +7,19 @@ public class Paxos {
 
 
     private static void defaultRun() {
-        Member M1 = new M1();
-        Member M2 = new M2();
-        Member M3 = new M3();
+        Member M1 = new M1(5);
+        Member M2 = new M2(5);
+        Member M3 = new M3(5);
 
         Random random = new Random();
-        Member M4 = new M4(random.nextInt());
-        Member M5 = new M4(random.nextInt());
-        Member M6 = new M4(random.nextInt());
-        Member M7 = new M4(random.nextInt());
-        Member M8 = new M4(random.nextInt());
-        Member M9 = new M4(random.nextInt());
+        Member M4 = new M4(random.nextInt(), 5);
+        Member M5 = new M4(random.nextInt(), 5);
+        Member M6 = new M4(random.nextInt(), 5);
+        Member M7 = new M4(random.nextInt(), 5);
+        Member M8 = new M4(random.nextInt(), 5);
+        Member M9 = new M4(random.nextInt(), 5);
         
+
     }
 
     public static void main(String[] args) {

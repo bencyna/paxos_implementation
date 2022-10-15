@@ -50,6 +50,13 @@ public class PaxosImplementation {
     // 2. If a majority of acceptors accept IDp, value, consensus is reached. Consensus is and alwas will be on value
     // 3. if a proposer/learner gets majority of accept for a specific IDp, they know that consensus has been reached on value (not IDp)
 
+    private Member[] members;   
 
+    PaxosImplementation(Member[] members) {
+        this.members = members;
+    }
 
+    public void newProposal(String value) {
+        // send message through method to all members
+    }
 }
