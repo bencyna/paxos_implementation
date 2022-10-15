@@ -1,11 +1,24 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Random;
+
 
 public class Paxos {
 
 
     private static void defaultRun() {
+        Member M1 = new M1();
+        Member M2 = new M2();
+        Member M3 = new M3();
 
+        Random random = new Random();
+        Member M4 = new M4(random.nextInt());
+        Member M5 = new M4(random.nextInt());
+        Member M6 = new M4(random.nextInt());
+        Member M7 = new M4(random.nextInt());
+        Member M8 = new M4(random.nextInt());
+        Member M9 = new M4(random.nextInt());
+        
     }
 
     public static void main(String[] args) {
