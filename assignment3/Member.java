@@ -1,11 +1,11 @@
 public class Member {
-    int responseDelay;
     Boolean wantsPresidency;
     int chancesOfResponse;
+    int responseDelay;
 
-    Member(int responseDelay, Boolean wantsPresidency, int chancesOfResponse) {
-        this.responseDelay = responseDelay;
+    Member(Boolean wantsPresidency, int chancesOfResponse) {
         this.wantsPresidency = wantsPresidency;
         this.chancesOfResponse = chancesOfResponse;
+        responseDelay = 0;
     }
 }
