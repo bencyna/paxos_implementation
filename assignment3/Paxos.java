@@ -22,12 +22,17 @@ public class Paxos {
         Member M9 = new M4(random.nextInt(), 5);
 
         Member[] members = {M1, M2, M3, M4, M5, M6, M7, M8, M9};
-        
+
+        System.out.println("about to start paxos");        
         PaxosImplementation runPaxos = new PaxosImplementation(members);
-        
+        runPaxos.start();
+        System.out.println("after starting paxos");        
+
+
         while (true) {
             ServerSocket ServerSocket = new ServerSocket(5432);
             Socket memberSocket = ServerSocket.accept();
+            System.out.println("socket connected!");
             Runnable socketHandler = new SocketHandler(memberSocket, runPaxos);
             new Thread(socketHandler).start();
         }
@@ -43,7 +48,7 @@ public class Paxos {
      
             // Reading data using readLine
             String input = reader.readLine();
-     
+            System.out.println("input: " + input);
             if (!input.matches("\\d+")) {
                 if (input.equals("default")) {
                     defaultRun();

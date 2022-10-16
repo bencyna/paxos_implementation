@@ -1,4 +1,4 @@
-public class PaxosImplementation {
+public class PaxosImplementation extends Thread{
     // Functions of paxos
 
 // PUT a lock on proposer count changes 
@@ -52,17 +52,34 @@ public class PaxosImplementation {
 
     private Member[] members;   
 
-    PaxosImplementation(Member[] members) {
+    PaxosImplementation(Member[] members) throws Exception {
         this.members = members;
-        
     }
 
     // lock
     public void newProposal(String value) {
         // send message through method to all members
         int id = 0;
+        System.out.println("new proposal being sent to all");
         for (Member member : members) {
             member.Accept(value, id);
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+        System.out.println("running paxos...");
+        // will be while consensus not reached
+        while (true) {
+            Thread.sleep(3000);
+            for (Member member : members) {
+                member.Propose();
+            }
+        }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
