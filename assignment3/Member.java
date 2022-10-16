@@ -8,6 +8,8 @@ public class Member {
     String name;
     int majority;
     int maxIDAccepted;
+    Boolean acceptedPrevious;
+    int acceptedID;
 
     Member(Boolean wantsPresidency, int chancesOfResponse, String name, int majority) {
         this.wantsPresidency = wantsPresidency;
@@ -16,6 +18,7 @@ public class Member {
         this.name = name;
         this.majority = majority;
         maxIDAccepted = 0;
+        acceptedPrevious = false;
     }
 
     public void Propose() throws Exception {
@@ -32,8 +35,17 @@ public class Member {
     }
 
     public String Accept(String value, int ID) {
+        if (maxIDAccepted > ID) {
+            return "fail";
+        }
+        if (acceptedPrevious) {
+            this.maxIDAccepted = ID;
+            return "Accept " + ID + " accepted id = " + acceptedID;
+        }
         System.out.println("accept: " + value + " ID: " + ID);
-        return "Accept";
+        this.maxIDAccepted = ID;
+        acceptedPrevious = true;
+        return "Accept " + ID +", " + value;
     }
 
 
