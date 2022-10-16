@@ -54,6 +54,7 @@ public class PaxosImplementation {
 
     PaxosImplementation(Member[] members) {
         this.members = members;
+        
     }
 
     // lock

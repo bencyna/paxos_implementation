@@ -1,3 +1,6 @@
+import java.io.DataOutputStream;
+import java.net.Socket;
+
 public class Member {
     Boolean wantsPresidency;
     int chancesOfResponse;
@@ -15,12 +18,15 @@ public class Member {
         maxIDAccepted = 0;
     }
 
-    public void Propose() {
-
+    public void Propose() throws Exception {
+        Socket s2 = new Socket("localhost", 5432);
+        DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
+        dout2.writeUTF(name);  
     }
 
     public String Accept(String value, int ID) {
-        return "";
+        System.out.println("accept: " + value + " ID: " + ID);
+        return "Accept";
     }
 
 

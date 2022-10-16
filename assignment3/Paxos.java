@@ -1,12 +1,14 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Random;
 
 
 public class Paxos {
 
 
-    private static void defaultRun() {
+    private static void defaultRun() throws Exception {
         Member M1 = new M1(5);
         Member M2 = new M2(5);
         Member M3 = new M3(5);
@@ -18,8 +20,17 @@ public class Paxos {
         Member M7 = new M4(random.nextInt(), 5);
         Member M8 = new M4(random.nextInt(), 5);
         Member M9 = new M4(random.nextInt(), 5);
-        
 
+        Member[] members = {M1, M2, M3, M4, M5, M6, M7, M8, M9};
+        
+        PaxosImplementation runPaxos = new PaxosImplementation(members);
+        
+        while (true) {
+            ServerSocket ServerSocket = new ServerSocket(5432);
+            Socket memberSocket = ServerSocket.accept();
+            Runnable socketHandler = new SocketHandler(memberSocket, runPaxos);
+            new Thread(socketHandler).start();
+        }
     }
 
     public static void main(String[] args) {
