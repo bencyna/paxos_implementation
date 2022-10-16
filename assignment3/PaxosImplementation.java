@@ -56,7 +56,12 @@ public class PaxosImplementation {
         this.members = members;
     }
 
+    // lock
     public void newProposal(String value) {
         // send message through method to all members
+        int id = 0;
+        for (Member member : members) {
+            member.Accept(value, id);
+        }
     }
 }
