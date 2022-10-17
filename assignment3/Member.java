@@ -1,4 +1,5 @@
 import java.io.DataOutputStream;
+import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -10,10 +11,11 @@ public class Member {
     int majority;
     int maxIDAccepted;
     Boolean acceptedPrevious;
+    String acceptedValue;
     int acceptedID;
     ArrayList<Integer> idArr = new ArrayList<Integer>();
     ArrayList<Integer> countArr = new ArrayList<Integer>();
-    ArrayList<String> valueArr = new ArrayList<String>();
+    ArrayList<ArrayList<String>> valueArr = new ArrayList<ArrayList<String>>();
 
 
     Member(Boolean wantsPresidency, int chancesOfResponse, String name, int majority) {
@@ -55,8 +57,8 @@ public class Member {
         return "Accept " + ID +", " + value;
     }
 
-    public void AcceptedProposal(String acceptorRes) {
-        int id = Integer.parseInt(acceptorRes.split("ccept")[1].split(",")[0]);
+    public void AcceptedProposal(String acceptorRes) throws Exception {
+        int id = Integer.parseInt(acceptorRes.split("ccept")[1].split(",")[0].trim());
         String value = acceptorRes.split("ccept")[1].split(",")[1];
 
         int idFoundIndex = -1;
@@ -67,12 +69,51 @@ public class Member {
             }
         }
         if (idFoundIndex >= 0) {
+            Boolean match = false;
+            ArrayList<String> previousValuesSaved = valueArr.get(idFoundIndex);
+            for (String prevValue : previousValuesSaved) {
+                if (prevValue.equals(value)) {
+                    match = true;
+                    break;
+                }
+            }
+            if (!match) {
+                previousValuesSaved.add(value);
+                valueArr.set(idFoundIndex, previousValuesSaved);
+            }
+
             countArr.set(idFoundIndex, countArr.get(idFoundIndex)+1);
         }
         else {
-            idArr.add(idFoundIndex);
+            idArr.add(id);
             countArr.add(1);
-            valueArr.add(value);
+            ArrayList<String> newArrList = new ArrayList<String>();
+            newArrList.add(value);
+            valueArr.add(newArrList);
+            idFoundIndex = idArr.size()-1;
+        }
+        if (countArr.get(idFoundIndex) >= majority) {
+            String finalValue;
+            ArrayList<String> valuesSaved = valueArr.get(idFoundIndex);
+
+            if (valuesSaved.size() > 1) {
+                for (String valueStored : valuesSaved) {
+                    if (!valueStored.equals(name)) {
+                        finalValue = valueStored;
+                        break;
+                    }
+                }
+            }
+            else {
+                finalValue = valuesSaved.get(0);
+            }
+
+        // propose id again to acceptors
+            Socket s2 = new Socket("localhost", 5432);
+            DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
+            dout2.writeUTF(name + " id: " + idArr.get(idFoundIndex));  
+            s2.close();
+            System.out.println("socket connection request sent 2");
         }
     }
 

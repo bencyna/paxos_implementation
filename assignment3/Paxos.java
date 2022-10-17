@@ -30,10 +30,11 @@ public class Paxos {
 
 
         while (true) {
+            System.out.println("socket read!");
             ServerSocket ServerSocket = new ServerSocket(5432);
             Socket memberSocket = ServerSocket.accept();
             System.out.println("socket connected!");
-            Runnable socketHandler = new SocketHandler(memberSocket, runPaxos);
+            Runnable socketHandler = new SocketHandler(memberSocket, runPaxos, ServerSocket);
             new Thread(socketHandler).start();
         }
     }
