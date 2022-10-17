@@ -54,6 +54,7 @@ public class PaxosImplementation extends Thread{
 
     PaxosImplementation(Member[] members) throws Exception {
         this.members = members;
+
     }
 
     // lock
@@ -61,8 +62,21 @@ public class PaxosImplementation extends Thread{
         // send message through method to all members
         int id = 0;
         System.out.println("new proposal being sent to all");
+        Member proposer = null; 
+
         for (Member member : members) {
-            member.Accept(value, id);
+            if (member.getName().equals(value)) {
+                proposer = member;
+                break;
+            }
+        }
+
+        for (Member member : members) {
+            String acceptorRes = member.Accept(value, id);
+            // need to send acceptorRes back to proposer!
+            if (proposer != null) {
+                proposer.AcceptedProposal(acceptorRes);
+            }
         }
     }
 

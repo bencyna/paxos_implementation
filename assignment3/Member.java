@@ -1,5 +1,6 @@
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Member {
     Boolean wantsPresidency;
@@ -10,6 +11,10 @@ public class Member {
     int maxIDAccepted;
     Boolean acceptedPrevious;
     int acceptedID;
+    ArrayList<Integer> idArr = new ArrayList<Integer>();
+    ArrayList<Integer> countArr = new ArrayList<Integer>();
+    ArrayList<String> valueArr = new ArrayList<String>();
+
 
     Member(Boolean wantsPresidency, int chancesOfResponse, String name, int majority) {
         this.wantsPresidency = wantsPresidency;
@@ -21,9 +26,11 @@ public class Member {
         acceptedPrevious = false;
     }
 
-    public void Propose() throws Exception {
-        System.out.println("propose executed");
+    public String getName() {
+        return name;
+    }
 
+    public void Propose() throws Exception {
         if (!name.contains("M1")) {
             System.out.println("not m1: " + name);
             return;
@@ -48,6 +55,26 @@ public class Member {
         return "Accept " + ID +", " + value;
     }
 
+    public void AcceptedProposal(String acceptorRes) {
+        int id = Integer.parseInt(acceptorRes.split("ccept")[1].split(",")[0]);
+        String value = acceptorRes.split("ccept")[1].split(",")[1];
+
+        int idFoundIndex = -1;
+        for (int i = 0; i < idArr.size(); i++) {
+            if (idArr.get(i) == id) {
+                idFoundIndex = i;
+                break;
+            }
+        }
+        if (idFoundIndex >= 0) {
+            countArr.set(idFoundIndex, countArr.get(idFoundIndex)+1);
+        }
+        else {
+            idArr.add(idFoundIndex);
+            countArr.add(1);
+            valueArr.add(value);
+        }
+    }
 
 
 }
