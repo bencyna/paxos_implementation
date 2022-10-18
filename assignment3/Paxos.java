@@ -14,25 +14,22 @@ public class Paxos {
         Member M3 = new M3(5);
 
         Random random = new Random();
-        Member M4 = new M4(random.nextInt(), 5);
-        Member M5 = new M4(random.nextInt(), 5);
-        Member M6 = new M4(random.nextInt(), 5);
-        Member M7 = new M4(random.nextInt(), 5);
-        Member M8 = new M4(random.nextInt(), 5);
-        Member M9 = new M4(random.nextInt(), 5);
+        Member M4 = new M4(random.nextInt(), 4);
+        Member M5 = new M4(random.nextInt(), 4);
+        Member M6 = new M4(random.nextInt(), 4);
+        Member M7 = new M4(random.nextInt(), 4);
+        Member M8 = new M4(random.nextInt(), 4);
+        Member M9 = new M4(random.nextInt(), 4);
 
         Member[] members = {M1, M2, M3, M4, M5, M6, M7, M8, M9};
 
-        System.out.println("about to start paxos");        
         PaxosImplementation runPaxos = new PaxosImplementation(members);
         runPaxos.start();
-        System.out.println("after starting paxos");        
 
         ServerSocket serverSocket = null;
         serverSocket = new ServerSocket(5432);
 
         for (;;) {
-            System.out.println("server ready");
             Socket memberSocket = null;
             memberSocket = serverSocket.accept();
             System.out.println("socket connected!");

@@ -38,8 +38,7 @@ public class Member {
     }
 
     public void Prepare() throws Exception {
-       if (wantsPresidency){
-            System.out.println(name + " preparing election request");
+       if (wantsPresidency && chancesOfResponse == 100){
             Socket s2 = new Socket("localhost", 5432);
             DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
             dout2.writeUTF(name);  
@@ -48,6 +47,9 @@ public class Member {
     }
 
     public String Accept(String value, int ID) {
+        if (wantsPresidency) {
+            return "fail";
+        }
         if (maxIDAccepted > ID) {
             return "fail";
         }
@@ -55,24 +57,29 @@ public class Member {
             this.maxIDAccepted = ID;
             return "Accept " + ID + " accepted id = " + acceptedID + " accepted value: " + initAcceptedValue;
         }
-        System.out.println("accept: " + value + " ID: " + ID);
         this.maxIDAccepted = ID;
-        this.acceptedID = ID;
-        this.initAcceptedValue = value; 
-        acceptedPrevious = true;
+        // this.acceptedID = ID;
+        // this.initAcceptedValue = value; 
+        // acceptedPrevious = true;
         return "Accept " + ID +", " + value;
     }
 
     public void AcceptedPrep(String acceptorRes) throws Exception {
         System.out.println("aceepted proposal member: " + name);
-        int id = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
+        int id; 
         String value;
         if (acceptorRes.contains("=")) {
             value = acceptorRes.split("accepted value: ")[1];
+            id = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
+            System.out.println("id if =: " + id);
+            System.out.println("acceptorRes if =: " + acceptorRes);
         }
         else {
             value = acceptorRes.split("ccept")[1].split(",")[1];
+            id = Integer.parseInt(acceptorRes.split("Accept")[1].split(",")[0].trim());
+
         }
+        System.out.println("id in acceptedPrep: " + id);
 
         int idFoundIndex = -1;
         for (int i = 0; i < idArr.size(); i++) {
@@ -105,6 +112,18 @@ public class Member {
             valueArr.add(newArrList);
             idFoundIndex = idArr.size()-1;
         }
+
+        for (int k = 0; k < countArr.size(); k++) {
+            System.out.println("countARR: " + k + " " + countArr.get(k));
+            System.out.println("idARR: " + k + " " + idArr.get(k));
+            
+            for (int j = 0; j < valueArr.get(k).size(); j++) {
+                System.out.println("value: " + k + "inside: " + j + " "  + valueArr.get(k).get(j));
+            }
+
+            
+        }
+
         if (countArr.get(idFoundIndex) >= majority) {
             String finalValue = null;
             ArrayList<String> valuesSaved = valueArr.get(idFoundIndex);
@@ -129,7 +148,6 @@ public class Member {
             dout2.writeUTF(finalValue + " id: " + idArr.get(idFoundIndex));  
             System.out.println("writing to socket 2: " + finalValue + " id: " + idArr.get(idFoundIndex));
             s2.close();
-            System.out.println("socket connection request sent 2");
         }
     }
 
