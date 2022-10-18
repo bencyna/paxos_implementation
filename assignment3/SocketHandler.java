@@ -5,12 +5,10 @@ import java.net.Socket;
 public class SocketHandler extends Thread {
     Socket socket;
     PaxosImplementation paxos;
-    ServerSocket ss;
     
-    public SocketHandler(Socket socket, PaxosImplementation paxos, ServerSocket ss) {
+    public SocketHandler(Socket socket, PaxosImplementation paxos) {
         this.socket = socket;
         this.paxos = paxos;
-        this.ss = ss;
     }
 
     @Override
@@ -24,7 +22,6 @@ public class SocketHandler extends Thread {
             System.out.println("handler about to send a new proposal! with value: " + value);
             paxos.newProposal(value);
             socket.close();
-            ss.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

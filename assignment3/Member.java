@@ -16,6 +16,8 @@ public class Member {
     ArrayList<Integer> idArr = new ArrayList<Integer>();
     ArrayList<Integer> countArr = new ArrayList<Integer>();
     ArrayList<ArrayList<String>> valueArr = new ArrayList<ArrayList<String>>();
+    Boolean proposalAccepted;
+    int acceptCount;
 
 
     Member(Boolean wantsPresidency, int chancesOfResponse, String name, int majority) {
@@ -26,13 +28,15 @@ public class Member {
         this.majority = majority;
         maxIDAccepted = 0;
         acceptedPrevious = false;
+        proposalAccepted = false;
+        acceptCount = 0;
     }
 
     public String getName() {
         return name;
     }
 
-    public void Propose() throws Exception {
+    public void Prepare() throws Exception {
         if (!name.contains("M1")) {
             System.out.println("not m1: " + name);
             return;
@@ -57,7 +61,8 @@ public class Member {
         return "Accept " + ID +", " + value;
     }
 
-    public void AcceptedProposal(String acceptorRes) throws Exception {
+    public void AcceptedPrep(String acceptorRes) throws Exception {
+        System.out.println("aceepted proposal member: " + name);
         int id = Integer.parseInt(acceptorRes.split("ccept")[1].split(",")[0].trim());
         String value = acceptorRes.split("ccept")[1].split(",")[1];
 
@@ -93,7 +98,7 @@ public class Member {
             idFoundIndex = idArr.size()-1;
         }
         if (countArr.get(idFoundIndex) >= majority) {
-            String finalValue;
+            String finalValue = null;
             ArrayList<String> valuesSaved = valueArr.get(idFoundIndex);
 
             if (valuesSaved.size() > 1) {
@@ -107,15 +112,38 @@ public class Member {
             else {
                 finalValue = valuesSaved.get(0);
             }
-
-        // propose id again to acceptors
+            if (finalValue == null) {
+                finalValue = name;
+            }
+            // propose id again to acceptors
             Socket s2 = new Socket("localhost", 5432);
             DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
-            dout2.writeUTF(name + " id: " + idArr.get(idFoundIndex));  
+            dout2.writeUTF(finalValue + " id: " + idArr.get(idFoundIndex));  
             s2.close();
             System.out.println("socket connection request sent 2");
         }
     }
 
+    public String AcceptProposal(String value, int ID) {
+        if (maxIDAccepted == ID) {
+            proposalAccepted = true;
+            acceptedID = ID;
+            acceptedValue = value;
+            // send accepted to all proposers and learners
+            return "accepted " + ID;
+        }
+        
+        return "fail";
+    }
+
+    public Boolean majorityAccepted(int id) {
+        acceptCount++;
+        if (acceptCount >= majority && acceptedID == id) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 }

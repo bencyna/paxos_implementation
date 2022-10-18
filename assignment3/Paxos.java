@@ -28,15 +28,18 @@ public class Paxos {
         runPaxos.start();
         System.out.println("after starting paxos");        
 
+        ServerSocket serverSocket = null;
+        serverSocket = new ServerSocket(5432);
 
-        while (true) {
-            System.out.println("socket read!");
-            ServerSocket ServerSocket = new ServerSocket(5432);
-            Socket memberSocket = ServerSocket.accept();
+        for (;;) {
+            System.out.println("server ready");
+            Socket memberSocket = null;
+            memberSocket = serverSocket.accept();
             System.out.println("socket connected!");
-            Runnable socketHandler = new SocketHandler(memberSocket, runPaxos, ServerSocket);
+            Runnable socketHandler = new SocketHandler(memberSocket, runPaxos);
             new Thread(socketHandler).start();
         }
+        // serverSocket.close();
     }
 
     public static void main(String[] args) {
