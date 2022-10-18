@@ -83,11 +83,10 @@ public class PaxosImplementation extends Thread {
                     }
                     
                     int acceptedId = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
-                    System.out.println("acceptedID: " + acceptedId);
                     for (Member member2 : members) {
                         if (!member2.getName().equals(member.getName())) {
                             if (member2.majorityAccepted(acceptedId)) {
-                                System.out.println("Consensus Reached Woohoo!!! ID: " + acceptedId + "and value: " + value);
+                                System.out.println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
                                 return;
                             }
                         }
@@ -113,9 +112,11 @@ public class PaxosImplementation extends Thread {
                 }
 
                 for (Member member : members) {
+                    System.out.println("value to accept: " + value);
                     String acceptorRes = member.Accept(value, id);
                     // need to send acceptorRes back to proposer!
                     if (proposer != null) {
+                        System.out.println(member.getName() + " accepted prep: " + acceptorRes);
                         proposer.AcceptedPrep(acceptorRes);
                     }
                 }

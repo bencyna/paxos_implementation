@@ -37,14 +37,13 @@ public class Member {
     }
 
     public void Prepare() throws Exception {
-        if (!name.contains("M1")) {
-            System.out.println("not m1: " + name);
-            return;
-        }
-        Socket s2 = new Socket("localhost", 5432);
-        DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
-        dout2.writeUTF(name);  
-        s2.close();
+       if (wantsPresidency){
+            System.out.println(name + " preparing election request");
+            Socket s2 = new Socket("localhost", 5432);
+            DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
+            dout2.writeUTF(name);  
+            s2.close();
+       }
     }
 
     public String Accept(String value, int ID) {
@@ -57,13 +56,14 @@ public class Member {
         }
         System.out.println("accept: " + value + " ID: " + ID);
         this.maxIDAccepted = ID;
+        this.acceptedID = ID;
         acceptedPrevious = true;
         return "Accept " + ID +", " + value;
     }
 
     public void AcceptedPrep(String acceptorRes) throws Exception {
         System.out.println("aceepted proposal member: " + name);
-        int id = Integer.parseInt(acceptorRes.split("ccept")[1].split(",")[0].trim());
+        int id = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
         String value = acceptorRes.split("ccept")[1].split(",")[1];
 
         int idFoundIndex = -1;
@@ -146,4 +146,9 @@ public class Member {
         }
     }
 
+    public String[] getStats() {
+        String[] stats = new String[5];
+
+        return stats;
+    }
 }
