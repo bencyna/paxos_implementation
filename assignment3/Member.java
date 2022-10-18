@@ -12,6 +12,7 @@ public class Member {
     int maxIDAccepted;
     Boolean acceptedPrevious;
     String acceptedValue;
+    String initAcceptedValue;
     int acceptedID;
     ArrayList<Integer> idArr = new ArrayList<Integer>();
     ArrayList<Integer> countArr = new ArrayList<Integer>();
@@ -52,11 +53,12 @@ public class Member {
         }
         if (acceptedPrevious) {
             this.maxIDAccepted = ID;
-            return "Accept " + ID + " accepted id = " + acceptedID;
+            return "Accept " + ID + " accepted id = " + acceptedID + " accepted value: " + initAcceptedValue;
         }
         System.out.println("accept: " + value + " ID: " + ID);
         this.maxIDAccepted = ID;
         this.acceptedID = ID;
+        this.initAcceptedValue = value; 
         acceptedPrevious = true;
         return "Accept " + ID +", " + value;
     }
@@ -64,7 +66,13 @@ public class Member {
     public void AcceptedPrep(String acceptorRes) throws Exception {
         System.out.println("aceepted proposal member: " + name);
         int id = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
-        String value = acceptorRes.split("ccept")[1].split(",")[1];
+        String value;
+        if (acceptorRes.contains("=")) {
+            value = acceptorRes.split("accepted value: ")[1];
+        }
+        else {
+            value = acceptorRes.split("ccept")[1].split(",")[1];
+        }
 
         int idFoundIndex = -1;
         for (int i = 0; i < idArr.size(); i++) {
@@ -119,6 +127,7 @@ public class Member {
             Socket s2 = new Socket("localhost", 5432);
             DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
             dout2.writeUTF(finalValue + " id: " + idArr.get(idFoundIndex));  
+            System.out.println("writing to socket 2: " + finalValue + " id: " + idArr.get(idFoundIndex));
             s2.close();
             System.out.println("socket connection request sent 2");
         }

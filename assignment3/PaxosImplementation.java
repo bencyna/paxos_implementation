@@ -67,58 +67,57 @@ public class PaxosImplementation extends Thread {
 
     // lock
     public void newProposal(String value) throws Exception {
-        synchronized(this) {
-            // send message through method to all members
-            int id;
-            System.out.println("new proposal ");
-            System.out.println(value);
-            if (value.contains("id")) {
-                id = Integer.parseInt(value.split("id: ")[1]);
-                value = value.split("id: ")[0];
+        // send message through method to all members
+        int id;
+        System.out.println("new proposal ");
+        System.out.println(value);
+        if (value.contains("id")) {
+            id = Integer.parseInt(value.split("id: ")[1]);
+            value = value.split("id: ")[0];
 
-                for (Member member : members) {
-                    String acceptorRes = member.AcceptProposal(value, id);
-                    if (acceptorRes.equals("fail")) {
-                        continue;
-                    }
-                    
-                    int acceptedId = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
-                    for (Member member2 : members) {
-                        if (!member2.getName().equals(member.getName())) {
-                            if (member2.majorityAccepted(acceptedId)) {
-                                System.out.println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
-                                return;
-                            }
+            for (Member member : members) {
+                String acceptorRes = member.AcceptProposal(value, id);
+                if (acceptorRes.equals("fail")) {
+                    continue;
+                }
+
+                int acceptedId = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
+                for (Member member2 : members) {
+                    if (!member2.getName().equals(member.getName())) {
+                        if (member2.majorityAccepted(acceptedId)) {
+                            System.out
+                                    .println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
+                            return;
                         }
                     }
-                }   
+                }
             }
-            else {
+        } else {
+            synchronized (this) {
                 BufferedReader currentID = new BufferedReader(new FileReader("currentID.txt"));
                 id = Integer.parseInt(currentID.readLine()) + 1;
                 FileWriter f2 = new FileWriter("currentID.txt", false);
                 f2.write(Integer.toString(id));
                 f2.close();
                 currentID.close();
+            }
+            System.out.println("new proposal being sent to all");
+            Member proposer = null;
 
-                System.out.println("new proposal being sent to all");
-                Member proposer = null; 
-
-                for (Member member : members) {
-                    if (member.getName().equals(value)) {
-                        proposer = member;
-                        break;
-                    }
+            for (Member member : members) {
+                if (member.getName().equals(value)) {
+                    proposer = member;
+                    break;
                 }
+            }
 
-                for (Member member : members) {
-                    System.out.println("value to accept: " + value);
-                    String acceptorRes = member.Accept(value, id);
-                    // need to send acceptorRes back to proposer!
-                    if (proposer != null) {
-                        System.out.println(member.getName() + " accepted prep: " + acceptorRes);
-                        proposer.AcceptedPrep(acceptorRes);
-                    }
+            for (Member member : members) {
+                System.out.println("value to accept: " + value);
+                String acceptorRes = member.Accept(value, id);
+                // need to send acceptorRes back to proposer!
+                if (proposer != null && !acceptorRes.equals("fail")) {
+                    System.out.println(member.getName() + " accepted prep: " + acceptorRes);
+                    proposer.AcceptedPrep(acceptorRes);
                 }
             }
         }
@@ -129,9 +128,9 @@ public class PaxosImplementation extends Thread {
         try {
             System.out.println("running paxos...");
             // will be while consensus not reached
-                for (Member member : members) {
-                    member.Prepare();
-                }
+            for (Member member : members) {
+                member.Prepare();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
