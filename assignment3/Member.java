@@ -1,5 +1,4 @@
 import java.io.DataOutputStream;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -12,7 +11,6 @@ public class Member {
     int maxIDAccepted;
     Boolean acceptedPrevious;
     String acceptedValue;
-    String initAcceptedValue;
     int acceptedID;
     ArrayList<Integer> idArr = new ArrayList<Integer>();
     ArrayList<Integer> countArr = new ArrayList<Integer>();
@@ -38,7 +36,7 @@ public class Member {
     }
 
     public void Prepare() throws Exception {
-       if (wantsPresidency && chancesOfResponse == 100){
+       if (wantsPresidency){
             Socket s2 = new Socket("localhost", 5432);
             DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
             dout2.writeUTF(name);  
@@ -50,17 +48,18 @@ public class Member {
         if (wantsPresidency) {
             return "fail";
         }
-        if (maxIDAccepted > ID) {
+        if (maxIDAccepted >= ID) {
             return "fail";
         }
         if (acceptedPrevious) {
             this.maxIDAccepted = ID;
-            return "Accept " + ID + " accepted id = " + acceptedID + " accepted value: " + initAcceptedValue;
+            return "Accept " + ID + " accepted id = " + acceptedID + " accepted value: " + acceptedValue;
         }
         this.maxIDAccepted = ID;
         // this.acceptedID = ID;
         // this.initAcceptedValue = value; 
         // acceptedPrevious = true;
+        // System.out.println("return accept id and value: " + ID + " " + value);
         return "Accept " + ID +", " + value;
     }
 
@@ -152,11 +151,15 @@ public class Member {
     }
 
     public String AcceptProposal(String value, int ID) {
+        if (wantsPresidency) {
+            return "fail";
+        }
         if (maxIDAccepted == ID) {
             proposalAccepted = true;
-            acceptedID = ID;
+            this.acceptedID = ID;
             acceptedValue = value;
             // send accepted to all proposers and learners
+            // System.out.println("AcceptProposal: " + name + ", about to accept id: " + ID);
             return "accepted " + ID;
         }
         
@@ -175,6 +178,8 @@ public class Member {
 
     public String[] getStats() {
         String[] stats = new String[5];
+        stats[0] = Integer.toString(acceptedID);
+        stats[1] = acceptedValue;
 
         return stats;
     }

@@ -13,6 +13,7 @@ public class PaxosImplementation extends Thread {
     // lock
     public void newProposal(String value) throws Exception {
         // send message through method to all members
+        // System.out.println("new proposal value: " + value);
         int id;
         if (value.contains("id")) {
             id = Integer.parseInt(value.split("id: ")[1]);
@@ -23,10 +24,11 @@ public class PaxosImplementation extends Thread {
                 if (acceptorRes.equals("fail")) {
                     continue;
                 }
-
+                // System.out.println("acceptorRes waiting for consensus to be reached: " + acceptorRes);
                 int acceptedId = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
                 for (Member member2 : members) {
                     if (!member2.getName().equals(member.getName())) {
+
                         if (member2.majorityAccepted(acceptedId)) {
                             System.out
                                     .println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
