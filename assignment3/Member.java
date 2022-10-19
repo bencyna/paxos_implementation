@@ -78,7 +78,7 @@ public class Member {
             value = acceptorRes.split("ccept")[1].split(",")[1];
             id = Integer.parseInt(acceptorRes.split("Accept")[1].split(",")[0].trim());
 
-        }
+        } 
 
         int idFoundIndex = -1;
         for (int i = 0; i < idArr.size(); i++) {
