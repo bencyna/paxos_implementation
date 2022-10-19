@@ -9,9 +9,9 @@ public class Paxos {
 
 
     private static void defaultRun() throws Exception {
-        Member M1 = new M1(5);
-        Member M2 = new M2(5);
-        Member M3 = new M3(5);
+        Member M1 = new M1(4);
+        Member M2 = new M2(4);
+        Member M3 = new M3(4);
 
         Random random = new Random();
         Member M4 = new M4(random.nextInt(), 4, 1);
@@ -32,11 +32,9 @@ public class Paxos {
         for (;;) {
             Socket memberSocket = null;
             memberSocket = serverSocket.accept();
-            System.out.println("socket connected!");
             Runnable socketHandler = new SocketHandler(memberSocket, runPaxos);
             new Thread(socketHandler).start();
         }
-        // serverSocket.close();
     }
 
     public static void main(String[] args) {

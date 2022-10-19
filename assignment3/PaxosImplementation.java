@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.net.Socket;
 
 public class PaxosImplementation extends Thread {
     private Member[] members;
@@ -10,28 +12,32 @@ public class PaxosImplementation extends Thread {
 
     }
 
-    // lock
+    public void consensusReached(int acceptedId, String value) throws Exception {
+        System.out
+        .println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
+    }
+      
+    // send message through method to all members
     public void newProposal(String value) throws Exception {
-        // send message through method to all members
-        // System.out.println("new proposal value: " + value);
         int id;
+        // if value contains id, it means this proposal is coming from a initially accepted prepare message
         if (value.contains("id")) {
             id = Integer.parseInt(value.split("id: ")[1]);
             value = value.split("id: ")[0];
+
+            System.out.println(value + " sending out voting proposal id: " + id);
 
             for (Member member : members) {
                 String acceptorRes = member.AcceptProposal(value, id);
                 if (acceptorRes.equals("fail")) {
                     continue;
                 }
-                // System.out.println("acceptorRes waiting for consensus to be reached: " + acceptorRes);
                 int acceptedId = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
                 for (Member member2 : members) {
                     if (!member2.getName().equals(member.getName())) {
 
                         if (member2.majorityAccepted(acceptedId)) {
-                            System.out
-                                    .println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
+                            consensusReached(acceptedId, value);
                             return;
                         }
                     }
@@ -54,11 +60,10 @@ public class PaxosImplementation extends Thread {
                     break;
                 }
             }
-
+            System.out.println(proposer.getName() + " sending out initial prepare. id: " + id);
             for (Member member : members) {
                 if (!member.getName().equals(proposer.getName())) {
                     String acceptorRes = member.Accept(value, id);
-                    // need to send acceptorRes back to proposer!
                     if (proposer != null && !acceptorRes.equals("fail")) {
                         // System.out.println(member.getName() + " accepted prep: " + acceptorRes);
                         proposer.AcceptedPrep(acceptorRes);

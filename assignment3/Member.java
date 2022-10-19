@@ -49,16 +49,21 @@ public class Member {
             return "fail";
         }
         if (maxIDAccepted >= ID) {
+            System.out.println(getName() + " seen an ID: " + maxIDAccepted + " larger than currentID: " + ID);
+
             return "fail";
         }
         if (acceptedPrevious) {
             this.maxIDAccepted = ID;
+            System.out.println(getName() + " already accepted a previous option currentID: " + ID + " accepted ID: " + acceptedID);
             return "Accept " + ID + " accepted id = " + acceptedID + " accepted value: " + acceptedValue;
         }
         this.maxIDAccepted = ID;
         // this.acceptedID = ID;
         // this.initAcceptedValue = value; 
         // acceptedPrevious = true;
+        System.out.println(getName() + "accepted ID: " + ID);
+
         return "Accept " + ID +", " + value;
     }
 
@@ -105,6 +110,17 @@ public class Member {
             newArrList.add(value);
             valueArr.add(newArrList);
             idFoundIndex = idArr.size()-1;
+        }
+
+        for (int k = 0; k < countArr.size(); k++) {
+            System.out.println(getName() +": countARR: " + k + " " + countArr.get(k));
+            System.out.println(getName() +"idARR: " + k + " " + idArr.get(k));
+            
+            for (int j = 0; j < valueArr.get(k).size(); j++) {
+                System.out.println(getName() +": value: " + k + "inside: " + j + " "  + valueArr.get(k).get(j));
+            }
+
+            
         }
 
         if (countArr.get(idFoundIndex) >= majority) {
