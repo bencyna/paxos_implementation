@@ -59,26 +59,21 @@ public class Member {
         // this.acceptedID = ID;
         // this.initAcceptedValue = value; 
         // acceptedPrevious = true;
-        // System.out.println("return accept id and value: " + ID + " " + value);
         return "Accept " + ID +", " + value;
     }
 
     public void AcceptedPrep(String acceptorRes) throws Exception {
-        System.out.println("aceepted proposal member: " + name);
         int id; 
         String value;
         if (acceptorRes.contains("=")) {
             value = acceptorRes.split("accepted value: ")[1];
             id = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
-            System.out.println("id if =: " + id);
-            System.out.println("acceptorRes if =: " + acceptorRes);
         }
         else {
             value = acceptorRes.split("ccept")[1].split(",")[1];
             id = Integer.parseInt(acceptorRes.split("Accept")[1].split(",")[0].trim());
 
         }
-        System.out.println("id in acceptedPrep: " + id);
 
         int idFoundIndex = -1;
         for (int i = 0; i < idArr.size(); i++) {
@@ -112,17 +107,6 @@ public class Member {
             idFoundIndex = idArr.size()-1;
         }
 
-        for (int k = 0; k < countArr.size(); k++) {
-            System.out.println("countARR: " + k + " " + countArr.get(k));
-            System.out.println("idARR: " + k + " " + idArr.get(k));
-            
-            for (int j = 0; j < valueArr.get(k).size(); j++) {
-                System.out.println("value: " + k + "inside: " + j + " "  + valueArr.get(k).get(j));
-            }
-
-            
-        }
-
         if (countArr.get(idFoundIndex) >= majority) {
             String finalValue = null;
             ArrayList<String> valuesSaved = valueArr.get(idFoundIndex);
@@ -145,7 +129,6 @@ public class Member {
             Socket s2 = new Socket("localhost", 5432);
             DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
             dout2.writeUTF(finalValue + " id: " + idArr.get(idFoundIndex));  
-            System.out.println("writing to socket 2: " + finalValue + " id: " + idArr.get(idFoundIndex));
             s2.close();
         }
     }
@@ -158,8 +141,8 @@ public class Member {
             proposalAccepted = true;
             this.acceptedID = ID;
             acceptedValue = value;
+
             // send accepted to all proposers and learners
-            // System.out.println("AcceptProposal: " + name + ", about to accept id: " + ID);
             return "accepted " + ID;
         }
         
