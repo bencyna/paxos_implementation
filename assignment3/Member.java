@@ -32,6 +32,7 @@ public class Member {
         proposalAccepted = false;
         acceptCount = 0;
         this.instantRes = instantRes;
+        System.out.println(name + " created");
     }
 
     public String getName() {

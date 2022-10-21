@@ -5,9 +5,9 @@ import java.io.FileWriter;
 import java.net.Socket;
 
 public class PaxosImplementation extends Thread {
-    private Member[] members;
+    private MemberThread[] members;
 
-    PaxosImplementation(Member[] members) throws Exception {
+    PaxosImplementation(MemberThread[] members) throws Exception {
         this.members = members;
 
     }
@@ -27,16 +27,16 @@ public class PaxosImplementation extends Thread {
 
             System.out.println(value + " sending out voting proposal id: " + id);
 
-            for (Member member : members) {
-                String acceptorRes = member.AcceptProposal(value, id);
+            for (MemberThread memberThread : members) {
+                String acceptorRes = memberThread.member.AcceptProposal(value, id);
                 if (acceptorRes.equals("fail")) {
                     continue;
                 }
                 int acceptedId = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
-                for (Member member2 : members) {
-                    if (!member2.getName().equals(member.getName())) {
+                for (MemberThread memberThread2 : members) {
+                    if (!memberThread2.getName().equals(memberThread.member.getName())) {
 
-                        if (member2.majorityAccepted(acceptedId)) {
+                        if (memberThread2.member.majorityAccepted(acceptedId)) {
                             consensusReached(acceptedId, value);
                             return;
                         }
@@ -52,21 +52,21 @@ public class PaxosImplementation extends Thread {
                 f2.close();
                 currentID.close();
             }
-            Member proposer = null;
+            MemberThread proposer = null;
 
-            for (Member member : members) {
-                if (member.getName().equals(value)) {
-                    proposer = member;
+            for (MemberThread memberThread : members) {
+                if (memberThread.member.getName().equals(value)) {
+                    proposer = memberThread;
                     break;
                 }
             }
             System.out.println(proposer.getName() + " sending out initial prepare. id: " + id);
-            for (Member member : members) {
-                if (!member.getName().equals(proposer.getName())) {
-                    String acceptorRes = member.Accept(value, id);
+            for (MemberThread memberThread : members) {
+                if (!memberThread.member.getName().equals(proposer.getName())) {
+                    String acceptorRes = memberThread.member.Accept(value, id);
                     if (proposer != null && !acceptorRes.equals("fail")) {
-                        // System.out.println(member.getName() + " accepted prep: " + acceptorRes);
-                        proposer.AcceptedPrep(acceptorRes);
+                        // System.out.println(memberThread.member.getName() + " accepted prep: " + acceptorRes);
+                        proposer.member.AcceptedPrep(acceptorRes);
                     }
                 }
             }
@@ -78,8 +78,8 @@ public class PaxosImplementation extends Thread {
         try {
             System.out.println("running paxos...");
             // will be while consensus not reached
-            for (Member member : members) {
-                member.Prepare();
+            for (MemberThread memberThread : members) {
+                memberThread.member.Prepare();
             }
         } catch (Exception e) {
             e.printStackTrace();

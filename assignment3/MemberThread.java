@@ -35,8 +35,11 @@ public class MemberThread extends Thread {
         else if (type.equals("M3")) {
             member = new M3(majority, instantRes);
         }
-        else if (type.equals("M4")) {
+        else if (type.equals("M4") || type.equals("citizen")) {
             member = new M4(chancesOfResponse, responseDelay, majority, citizenCount, instantRes);
+        }
+        else {
+            System.out.println("error couldn't create " + type + " member");
         }
 
     }
