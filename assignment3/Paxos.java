@@ -9,19 +9,20 @@ public class Paxos {
 
 
     private static void defaultRun(Boolean instantRes) throws Exception {
-        Member M1 = new M1(4, instantRes);
-        Member M2 = new M2(4, instantRes);
-        Member M3 = new M3(4, instantRes);
+        // these values are not neccessarily having an effect
+        MemberThread M1 = new MemberThread("M1", true, 100, 0, "Member M1", 4, instantRes, 0);
+        MemberThread M2 = new MemberThread("M2", true, 100, 0, "Member M2", 4, instantRes, 0);
+        MemberThread M3 = new MemberThread("M2", true, 100, 0, "Member M2", 4, instantRes, 0);
 
         Random random = new Random();
 
-        Member M4 = new M4(100, random.nextInt(300), 4, 1, instantRes);
-        Member M5 = new M4(100, random.nextInt(300), 4, 2, instantRes);
-        Member M6 = new M4(100, random.nextInt(300), 4,3, instantRes);
-        Member M7 = new M4(100, random.nextInt(300), 4, 4, instantRes);
-        Member M8 = new M4(100, random.nextInt(300), 4, 5, instantRes);
+        MemberThread M4 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 1);
+        MemberThread M5 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 2);
+        MemberThread M6 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 3);
+        MemberThread M7 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 4);
+        MemberThread M8 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 5);
 
-        Member M9 = new M4(100, random.nextInt(300), 4, 6, instantRes);
+        MemberThread M9 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 6);
 
         Member[] members = {M1, M2, M3, M4, M5, M6, M7, M8, M9};
 

@@ -25,7 +25,6 @@ public class Member {
         this.wantsPresidency = wantsPresidency;
         this.chancesOfResponse = chancesOfResponse;
         this.responseDelay = responseDelay;
-        responseDelay = 0;
         this.name = name;
         this.majority = majority;
         maxIDAccepted = 0;
