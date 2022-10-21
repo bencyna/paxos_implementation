@@ -17,9 +17,10 @@ public class Member {
     ArrayList<ArrayList<String>> valueArr = new ArrayList<ArrayList<String>>();
     Boolean proposalAccepted;
     int acceptCount;
+    Boolean instantRes;
 
 
-    Member(Boolean wantsPresidency, int chancesOfResponse, String name, int majority) {
+    Member(Boolean wantsPresidency, int chancesOfResponse, String name, int majority, Boolean instantRes) {
         this.wantsPresidency = wantsPresidency;
         this.chancesOfResponse = chancesOfResponse;
         responseDelay = 0;
@@ -29,6 +30,7 @@ public class Member {
         acceptedPrevious = false;
         proposalAccepted = false;
         acceptCount = 0;
+        this.instantRes = instantRes;
     }
 
     public String getName() {
@@ -77,7 +79,6 @@ public class Member {
         else {
             value = acceptorRes.split("ccept")[1].split(",")[1];
             id = Integer.parseInt(acceptorRes.split("Accept")[1].split(",")[0].trim());
-
         } 
 
         int idFoundIndex = -1;

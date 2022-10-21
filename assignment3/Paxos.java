@@ -8,18 +8,18 @@ import java.util.Random;
 public class Paxos {
 
 
-    private static void defaultRun() throws Exception {
-        Member M1 = new M1(4);
-        Member M2 = new M2(4);
-        Member M3 = new M3(4);
+    private static void defaultRun(Boolean instantRes) throws Exception {
+        Member M1 = new M1(4, instantRes);
+        Member M2 = new M2(4, instantRes);
+        Member M3 = new M3(4, instantRes);
 
         Random random = new Random();
-        Member M4 = new M4(random.nextInt(), 4, 1);
-        Member M5 = new M4(random.nextInt(), 4, 2);
-        Member M6 = new M4(random.nextInt(), 4,3);
-        Member M7 = new M4(random.nextInt(), 4, 4);
-        Member M8 = new M4(random.nextInt(), 4, 5);
-        Member M9 = new M4(random.nextInt(), 4, 6);
+        Member M4 = new M4(random.nextInt(), 4, 1, instantRes);
+        Member M5 = new M4(random.nextInt(), 4, 2, instantRes);
+        Member M6 = new M4(random.nextInt(), 4,3, instantRes);
+        Member M7 = new M4(random.nextInt(), 4, 4, instantRes);
+        Member M8 = new M4(random.nextInt(), 4, 5, instantRes);
+        Member M9 = new M4(random.nextInt(), 4, 6, instantRes);
 
         Member[] members = {M1, M2, M3, M4, M5, M6, M7, M8, M9};
 
@@ -50,7 +50,14 @@ public class Paxos {
             System.out.println("input: " + input);
             if (!input.matches("\\d+")) {
                 if (input.equals("default")) {
-                    defaultRun();
+                    System.out.println("Do you want all responses to be instant (y)? Alternativley, type N for the members to match the assignment 3 description");
+                    String instantResInput = reader.readLine();
+                    if (instantResInput.equals("Y") || instantResInput.equals("y") || instantResInput.equals("yes") || instantResInput.equals("Yes")) {
+                        defaultRun(true);
+                    }
+                    else {
+                        defaultRun(false);
+                    }
                 }
                 else {
                 System.out.println("Please enter digits only e.g. 21");

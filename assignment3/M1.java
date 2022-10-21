@@ -1,5 +1,5 @@
 public class M1 extends Member {
-    public M1(int majority) {
-        super(true, 100, "Member M1", majority);
+    public M1(int majority, Boolean instantRes) {
+        super(true, 100, "Member M1", majority, instantRes);
     }
 }
