@@ -14,12 +14,14 @@ public class Paxos {
         Member M3 = new M3(4, instantRes);
 
         Random random = new Random();
-        Member M4 = new M4(random.nextInt(), 4, 1, instantRes);
-        Member M5 = new M4(random.nextInt(), 4, 2, instantRes);
-        Member M6 = new M4(random.nextInt(), 4,3, instantRes);
-        Member M7 = new M4(random.nextInt(), 4, 4, instantRes);
-        Member M8 = new M4(random.nextInt(), 4, 5, instantRes);
-        Member M9 = new M4(random.nextInt(), 4, 6, instantRes);
+
+        Member M4 = new M4(100, random.nextInt(300), 4, 1, instantRes);
+        Member M5 = new M4(100, random.nextInt(300), 4, 2, instantRes);
+        Member M6 = new M4(100, random.nextInt(300), 4,3, instantRes);
+        Member M7 = new M4(100, random.nextInt(300), 4, 4, instantRes);
+        Member M8 = new M4(100, random.nextInt(300), 4, 5, instantRes);
+
+        Member M9 = new M4(100, random.nextInt(300), 4, 6, instantRes);
 
         Member[] members = {M1, M2, M3, M4, M5, M6, M7, M8, M9};
 

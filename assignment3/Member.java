@@ -1,6 +1,7 @@
 import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Member {
     Boolean wantsPresidency;
@@ -20,9 +21,10 @@ public class Member {
     Boolean instantRes;
 
 
-    Member(Boolean wantsPresidency, int chancesOfResponse, String name, int majority, Boolean instantRes) {
+    Member(Boolean wantsPresidency, int chancesOfResponse, int responseDelay, String name, int majority, Boolean instantRes) {
         this.wantsPresidency = wantsPresidency;
         this.chancesOfResponse = chancesOfResponse;
+        this.responseDelay = responseDelay;
         responseDelay = 0;
         this.name = name;
         this.majority = majority;
@@ -39,39 +41,56 @@ public class Member {
 
     public void Prepare() throws Exception {
        if (wantsPresidency){
-            Socket s2 = new Socket("localhost", 5432);
-            DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
-            dout2.writeUTF(name);  
-            s2.close();
+            if (willRespond() || instantRes) {
+                if (!instantRes) {
+                    causeDelay();
+                }
+                Socket s2 = new Socket("localhost", 5432);
+                DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
+                dout2.writeUTF(name);  
+                s2.close();
+            }
        }
     }
 
-    public String Accept(String value, int ID) {
-        if (wantsPresidency) {
-            return "fail";
-        }
-        if (maxIDAccepted >= ID) {
-            System.out.println(getName() + " seen an ID: " + maxIDAccepted + " larger than currentID: " + ID);
+    public String Accept(String value, int ID) throws Exception {
+            if (!instantRes) {
+                causeDelay();
+            }
+            if (wantsPresidency || !willRespond()) {
+                return "fail";
+            }
+            if (maxIDAccepted >= ID) {
+                System.out.println(getName() + " seen an ID: " + maxIDAccepted + " larger than currentID: " + ID);
 
-            return "fail";
-        }
-        if (acceptedPrevious) {
+                return "fail";
+            }
+            if (acceptedPrevious) {
+                this.maxIDAccepted = ID;
+                System.out.println(getName() + " already accepted a previous option currentID: " + ID + " accepted ID: " + acceptedID);
+                return "Accept " + ID + " accepted id = " + acceptedID + " accepted value: " + acceptedValue;
+            }
             this.maxIDAccepted = ID;
-            System.out.println(getName() + " already accepted a previous option currentID: " + ID + " accepted ID: " + acceptedID);
-            return "Accept " + ID + " accepted id = " + acceptedID + " accepted value: " + acceptedValue;
-        }
-        this.maxIDAccepted = ID;
-        // this.acceptedID = ID;
-        // this.initAcceptedValue = value; 
-        // acceptedPrevious = true;
-        System.out.println(getName() + "accepted ID: " + ID);
+            // this.acceptedID = ID;
+            // this.initAcceptedValue = value; 
+            // acceptedPrevious = true;
+            System.out.println(getName() + "accepted ID: " + ID);
 
-        return "Accept " + ID +", " + value;
+            return "Accept " + ID +", " + value;
     }
 
     public void AcceptedPrep(String acceptorRes) throws Exception {
         int id; 
         String value;
+
+        if (!willRespond()) {
+            return;
+        }
+
+        if (!instantRes) {
+            causeDelay();
+        }
+
         if (acceptorRes.contains("=")) {
             value = acceptorRes.split("accepted value: ")[1];
             id = Integer.parseInt(acceptorRes.replaceAll("[^\\d.]", ""));
@@ -150,9 +169,12 @@ public class Member {
         }
     }
 
-    public String AcceptProposal(String value, int ID) {
-        if (wantsPresidency) {
+    public String AcceptProposal(String value, int ID) throws Exception {
+        if (wantsPresidency || !willRespond()) {
             return "fail";
+        }
+        if (!instantRes) {
+            causeDelay();
         }
         if (maxIDAccepted == ID) {
             proposalAccepted = true;
@@ -182,5 +204,19 @@ public class Member {
         stats[1] = acceptedValue;
 
         return stats;
+    }
+
+    private void causeDelay() throws Exception {
+        Thread.sleep(responseDelay);
+    }
+
+    private Boolean willRespond() {
+        Random rand = new Random(); 
+        int int_random = rand.nextInt(100); 
+        
+        if (int_random > chancesOfResponse) {
+            return false;
+        }
+        return true;
     }
 }
