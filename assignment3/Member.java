@@ -57,7 +57,7 @@ public class Member {
             if (!instantRes) {
                 causeDelay();
             }
-            if (wantsPresidency || !willRespond()) {
+            if (!willRespond()) {
                 return "fail";
             }
             if (maxIDAccepted >= ID) {
@@ -170,7 +170,7 @@ public class Member {
     }
 
     public String AcceptProposal(String value, int ID) throws Exception {
-        if (wantsPresidency || !willRespond()) {
+        if (!willRespond()) {
             return "fail";
         }
         if (!instantRes) {

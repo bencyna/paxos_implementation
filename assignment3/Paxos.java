@@ -9,26 +9,26 @@ public class Paxos {
     private static void defaultRun(Boolean instantRes) throws Exception {
         // these values are not neccessarily having an effect
 
-        MemberThread M1 = new MemberThread("M1", true, 100, 0, 4, instantRes, 0);
+        MemberThread M1 = new MemberThread("M1", true, 100, 0, 5, instantRes, 0);
         M1.start();
-        MemberThread M2 = new MemberThread("M2", true, 100, 0, 4, instantRes, 0);
+        MemberThread M2 = new MemberThread("M2", true, 100, 0, 5, instantRes, 0);
         M2.start();
-        MemberThread M3 = new MemberThread("M2", true, 100, 0, 4, instantRes, 0);
+        MemberThread M3 = new MemberThread("M2", true, 100, 0, 5, instantRes, 0);
         M3.start();
         Random random = new Random();
 
-        MemberThread M4 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 1);
+        MemberThread M4 = new MemberThread("citizen", false, 100, random.nextInt(300), 5, instantRes, 1);
         M4.start();
-        MemberThread M5 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 2);
+        MemberThread M5 = new MemberThread("citizen", false, 100, random.nextInt(300), 5, instantRes, 2);
         M5.start();
-        MemberThread M6 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 3);
+        MemberThread M6 = new MemberThread("citizen", false, 100, random.nextInt(300), 5, instantRes, 3);
         M6.start();
-        MemberThread M7 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 4);
+        MemberThread M7 = new MemberThread("citizen", false, 100, random.nextInt(300), 5, instantRes, 4);
         M7.start();
-        MemberThread M8 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 5);
+        MemberThread M8 = new MemberThread("citizen", false, 100, random.nextInt(300), 5, instantRes, 5);
         M8.start();
 
-        MemberThread M9 = new MemberThread("citizen", false, 100, random.nextInt(300), 4, instantRes, 6);
+        MemberThread M9 = new MemberThread("citizen", false, 100, random.nextInt(300), 5, instantRes, 6);
         M9.start();
         MemberThread[] members = { M1, M2, M3, M4, M5, M6, M7, M8, M9 };
 
