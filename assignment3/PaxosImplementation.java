@@ -15,7 +15,7 @@ public class PaxosImplementation extends Thread {
         Thread.sleep(3000);
         for (MemberThread memberThread : members) {
             String[] stats = memberThread.member.getStats();
-            System.out.println(stats[0] + " accepted: " + stats[1] + " id: " + stats[2]);
+            System.out.println(stats[0] + " accepted: " + stats[1] + " id: " + stats[2] + " acceptedPrevious: " + stats[3]);
         }
     }
 
@@ -50,7 +50,7 @@ public class PaxosImplementation extends Thread {
                         }
                     }
                 }
-                printStats();
+                // printStats();
             }
         } else {
             synchronized (this) {

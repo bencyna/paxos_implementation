@@ -235,6 +235,12 @@ public class Member {
         stats[2] = Integer.toString(acceptedID);
         stats[1] = acceptedValue;
         stats[0] = name;
+        if (proposalAccepted) {
+            stats[3] = "true";
+        }
+        else {
+            stats[3] = "false";
+        }
 
         return stats;
     }

@@ -1,7 +1,7 @@
 public class M2 extends Member {
 
     public M2(int majority, Boolean instantRes) {
-        super(true, 50, 50, "Member M2", majority, instantRes);
+        super(true, 50, 1000, "Member M2", majority, instantRes);
     }
 
     public void toCafe() {
@@ -10,7 +10,7 @@ public class M2 extends Member {
 
     }
     public void fromCafe() {
-        responseDelay = 10000;
+        responseDelay = 1000;
         chancesOfResponse = 100;
     }
 }
