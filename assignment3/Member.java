@@ -16,6 +16,9 @@ public class Member {
     ArrayList<Integer> idArr = new ArrayList<Integer>();
     ArrayList<Integer> countArr = new ArrayList<Integer>();
     ArrayList<ArrayList<String>> valueArr = new ArrayList<ArrayList<String>>();
+    ArrayList<Integer> acceptIdArr = new ArrayList<Integer>();
+    ArrayList<Integer> acceptCountArr = new ArrayList<Integer>();
+    ArrayList<Integer> proposalIdsSent = new ArrayList<Integer>();
     Boolean proposalAccepted;
     int acceptCount;
     Boolean instantRes;
@@ -132,16 +135,16 @@ public class Member {
             idFoundIndex = idArr.size()-1;
         }
 
-        for (int k = 0; k < countArr.size(); k++) {
-            System.out.println(getName() +": countARR: " + k + " " + countArr.get(k));
-            System.out.println(getName() +"idARR: " + k + " " + idArr.get(k));
+        // for (int k = 0; k < countArr.size(); k++) {
+        //     System.out.println(getName() +": countARR: " + k + " " + countArr.get(k));
+        //     System.out.println(getName() +"idARR: " + k + " " + idArr.get(k));
             
-            for (int j = 0; j < valueArr.get(k).size(); j++) {
-                System.out.println(getName() +": value: " + k + "inside: " + j + " "  + valueArr.get(k).get(j));
-            }
+        //     for (int j = 0; j < valueArr.get(k).size(); j++) {
+        //         System.out.println(getName() +": value: " + k + "inside: " + j + " "  + valueArr.get(k).get(j));
+        //     }
 
             
-        }
+        // }
 
         if (countArr.get(idFoundIndex) >= majority) {
             String finalValue = null;
@@ -161,11 +164,21 @@ public class Member {
             if (finalValue == null) {
                 finalValue = name;
             }
-            // propose id again to acceptors
+            // propose id again to acceptors if I haven't already sent a proposal out
+            Boolean sentBefore = false;
+            for (int i = 0; i < proposalIdsSent.size(); i++) {
+                if (proposalIdsSent.get(i) ==  idArr.get(idFoundIndex)) {
+                    sentBefore = true;
+                    break;
+                }
+            }
+            if (!sentBefore) {
+            proposalIdsSent.add(idArr.get(idFoundIndex));
             Socket s2 = new Socket("localhost", 5432);
             DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
             dout2.writeUTF(finalValue + " id: " + idArr.get(idFoundIndex));  
             s2.close();
+            }
         }
     }
 
@@ -189,8 +202,27 @@ public class Member {
     }
 
     public Boolean majorityAccepted(int id) {
-        acceptCount++;
-        if (acceptCount >= majority && acceptedID == id) {
+        int idFoundIndex = -1;
+        for (int i = 0; i < acceptIdArr.size(); i++) {
+            if  (acceptIdArr.get(i) == id) {
+                idFoundIndex = i;
+                break;
+            }
+        }
+        if (idFoundIndex >= 0) {
+            acceptCountArr.set(idFoundIndex, acceptCountArr.get(idFoundIndex) + 1);
+        }
+        else {
+            acceptIdArr.add(id);
+            acceptCountArr.add(1);
+            idFoundIndex = acceptIdArr.size()-1;
+        }
+
+        for (int i = 0; i < acceptIdArr.size(); i++) {
+            System.out.println(name + "accepted dets: id: " + acceptIdArr.get(i) + " count: " + acceptCountArr.get(i) + " I: " + i);
+        }
+        // cant just be accept count because it may be a new id
+        if (acceptCountArr.get(idFoundIndex) >= majority) {
             return true;
         }
         else {
@@ -200,8 +232,9 @@ public class Member {
 
     public String[] getStats() {
         String[] stats = new String[5];
-        stats[0] = Integer.toString(acceptedID);
+        stats[2] = Integer.toString(acceptedID);
         stats[1] = acceptedValue;
+        stats[0] = name;
 
         return stats;
     }

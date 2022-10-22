@@ -13,7 +13,7 @@ public class Paxos {
         M1.start();
         MemberThread M2 = new MemberThread("M2", true, 100, 0, 5, instantRes, 0);
         M2.start();
-        MemberThread M3 = new MemberThread("M2", true, 100, 0, 5, instantRes, 0);
+        MemberThread M3 = new MemberThread("M3", true, 100, 0, 5, instantRes, 0);
         M3.start();
         Random random = new Random();
 

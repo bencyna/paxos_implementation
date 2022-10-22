@@ -9,12 +9,20 @@ public class PaxosImplementation extends Thread {
 
     PaxosImplementation(MemberThread[] members) throws Exception {
         this.members = members;
+    }
 
+    public void printStats() throws Exception {
+        Thread.sleep(3000);
+        for (MemberThread memberThread : members) {
+            String[] stats = memberThread.member.getStats();
+            System.out.println(stats[0] + " accepted: " + stats[1] + " id: " + stats[2]);
+        }
     }
 
     public void consensusReached(int acceptedId, String value) throws Exception {
         System.out
         .println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
+        printStats();
     }
       
     // send message through method to all members
@@ -42,6 +50,7 @@ public class PaxosImplementation extends Thread {
                         }
                     }
                 }
+                printStats();
             }
         } else {
             synchronized (this) {
@@ -60,7 +69,7 @@ public class PaxosImplementation extends Thread {
                     break;
                 }
             }
-            System.out.println(proposer.getName() + " sending out initial prepare. id: " + id);
+            System.out.println(proposer.member.getName() + " sending out initial prepare. id: " + id);
             for (MemberThread memberThread : members) {
                 if (!memberThread.member.getName().equals(proposer.getName())) {
                     String acceptorRes = memberThread.member.Accept(value, id);

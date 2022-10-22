@@ -10,7 +10,7 @@ public class M2 extends Member {
 
     }
     public void fromCafe() {
-        responseDelay = 1000;
+        responseDelay = 10000;
         chancesOfResponse = 100;
     }
 }
