@@ -20,10 +20,13 @@ public class PaxosImplementation extends Thread {
     }
 
     public void consensusReached(int acceptedId, String value) throws Exception {
-
+        for (MemberThread memberThread : members) {
+            memberThread.member.setConsensus();
+        }
         System.out
         .println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
         printStats();
+
     }
       
     // send message through method to all members
