@@ -20,7 +20,6 @@ public class PaxosImplementation extends Thread {
     }
 
     public void consensusReached(int acceptedId, String value) throws Exception {
-
         System.out
         .println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
         printStats();
@@ -75,7 +74,7 @@ public class PaxosImplementation extends Thread {
                 if (!memberThread.member.getName().equals(proposer.getName())) {
                     String acceptorRes = memberThread.member.Accept(value, id);
                     if (proposer != null && !acceptorRes.equals("fail")) {
-                        System.out.println(memberThread.member.getName() + " about to send to acceptorPrep: " + acceptorRes);
+                        // System.out.println(memberThread.member.getName() + " accepted prep: " + acceptorRes);
                         proposer.member.AcceptedPrep(acceptorRes);
                     }
                 }

@@ -7,6 +7,6 @@ public class M4 extends Member {
 
     int generateResponseDelay() {
         Random rand = new Random(); 
-        return rand.nextInt(1000) * 100;
+        return rand.nextInt(400) + 100;
     }
 }
