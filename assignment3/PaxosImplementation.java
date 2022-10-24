@@ -12,7 +12,9 @@ public class PaxosImplementation extends Thread {
     }
 
     public void printStats() throws Exception {
-        Thread.sleep(3000);
+        Thread.sleep(1000);
+        System.out.println("getting stats...");
+        Thread.sleep(1000);
         for (MemberThread memberThread : members) {
             String[] stats = memberThread.member.getStats();
             System.out.println(stats[0] + " accepted: " + stats[1] + " id: " + stats[2] + " acceptedPrevious: " + stats[3]);
@@ -26,7 +28,7 @@ public class PaxosImplementation extends Thread {
         System.out
         .println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
         printStats();
-
+        Thread.interrupted();
     }
       
     // send message through method to all members
