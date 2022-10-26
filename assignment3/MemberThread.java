@@ -10,15 +10,15 @@ public class MemberThread extends Thread {
     int citizenCount;
 
     MemberThread(String type, Boolean wantsPresidency,
-    int chancesOfResponse,
-    int responseDelay,
-    int majority,
-    Boolean instantRes,
-    int citizenCount) {
+            int chancesOfResponse,
+            int responseDelay,
+            int majority,
+            Boolean instantRes,
+            int citizenCount) {
         this.wantsPresidency = wantsPresidency;
-        this.chancesOfResponse = chancesOfResponse ;
-        this.responseDelay = responseDelay ;
-        this.majority = majority ;
+        this.chancesOfResponse = chancesOfResponse;
+        this.responseDelay = responseDelay;
+        this.majority = majority;
         this.instantRes = instantRes;
         this.type = type;
         this.citizenCount = citizenCount;
@@ -28,17 +28,13 @@ public class MemberThread extends Thread {
     public void run() {
         if (type.equals("M1")) {
             member = new M1(majority, instantRes);
-        }
-        else if (type.equals("M2")) {
+        } else if (type.equals("M2")) {
             member = new M2(majority, instantRes);
-        }
-        else if (type.equals("M3")) {
+        } else if (type.equals("M3")) {
             member = new M3(majority, instantRes);
-        }
-        else if (type.equals("M4") || type.equals("citizen")) {
+        } else if (type.equals("M4") || type.equals("citizen")) {
             member = new M4(chancesOfResponse, responseDelay, majority, citizenCount, instantRes);
-        }
-        else {
+        } else {
             System.out.println("error couldn't create " + type + " member");
         }
 

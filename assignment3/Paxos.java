@@ -33,11 +33,12 @@ public class Paxos {
         MemberThread[] members = { M1, M2, M3, M4, M5, M6, M7, M8, M9 };
 
         Thread.sleep(500);
-
-        PaxosImplementation runPaxos = new PaxosImplementation(members);
-        runPaxos.start();
-
+        
         AlternateMemberResponses alt = new AlternateMemberResponses(M2.member, M3.member);
+        alt.start();
+
+        PaxosImplementation runPaxos = new PaxosImplementation(members, alt);
+        runPaxos.start();
 
         ServerSocket serverSocket = null;
         serverSocket = new ServerSocket(5432);

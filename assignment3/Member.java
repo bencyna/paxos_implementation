@@ -23,6 +23,7 @@ public class Member {
     int acceptCount;
     Boolean instantRes;
     Boolean consensusReached;
+    Propose proposeTimeout;
 
 
     Member(Boolean wantsPresidency, int chancesOfResponse, int responseDelay, String name, int majority, Boolean instantRes) {
@@ -37,6 +38,7 @@ public class Member {
         acceptCount = 0;
         this.instantRes = instantRes;
         consensusReached = false;
+        proposeTimeout = null;
         System.out.println(name + " created");
     }
 
@@ -59,6 +61,9 @@ public class Member {
                 dout2.writeUTF(name);  
                 s2.close();
             }
+            proposeTimeout = new Propose(this);
+            Thread.sleep(100);
+            proposeTimeout.start();
        }
     }
 
@@ -66,7 +71,7 @@ public class Member {
             if (!instantRes) {
                 causeDelay();
             }
-            if (!willRespond() || consensusReached) {
+            if (!willRespond() || consensusReached || value.equals(this.getName())) {
                 return "fail";
             }
             if (maxIDAccepted >= ID) {
@@ -79,9 +84,11 @@ public class Member {
                 System.out.println(getName() + " already accepted a previous option currentID: " + ID + " accepted ID: " + acceptedID);
                 return "Accept " + ID + " accepted id = " + acceptedID + " accepted value: " + acceptedValue;
             }
+            if (proposeTimeout != null) {
+                System.out.println("response to true");
+                proposeTimeout.setResponseTrue();
+            }
             this.maxIDAccepted = ID;
-            // this.acceptedID = ID;
-            // this.initAcceptedValue = value; 
             System.out.println(getName() + "accepted ID: " + ID + " value:" + value);
 
             return "Accept " + ID +", " + value;

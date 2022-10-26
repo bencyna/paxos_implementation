@@ -6,9 +6,11 @@ import java.net.Socket;
 
 public class PaxosImplementation extends Thread {
     private MemberThread[] members;
+    AlternateMemberResponses alt;
 
-    PaxosImplementation(MemberThread[] members) throws Exception {
+    PaxosImplementation(MemberThread[] members, AlternateMemberResponses alt) throws Exception {
         this.members = members;
+        this.alt = alt;
     }
 
     public void printStats() throws Exception {
@@ -22,6 +24,7 @@ public class PaxosImplementation extends Thread {
     }
 
     public void consensusReached(int acceptedId, String value) throws Exception {
+        alt.end();
         for (MemberThread memberThread : members) {
             memberThread.member.setConsensus();
         }

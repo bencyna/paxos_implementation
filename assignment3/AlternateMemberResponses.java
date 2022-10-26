@@ -5,21 +5,31 @@ public class AlternateMemberResponses extends Thread {
     Member M3;
     Boolean m2AtCafe;
     Boolean m3InWoods;
+    Boolean end;
 
     AlternateMemberResponses(Member M2, Member M3) {
         this.M2 = M2;
         this.M3 = M3;
         m2AtCafe = false;
         m3InWoods = false;
+        end = false;
     }
     
+    public void end() {
+        end = true;
+    }
+
     @Override
     public void run() {
         try {
-        for (;;) {   
+        for (;;) {  
+            if (end) {
+                return;
+            } 
+            Thread.sleep(1000);
             Random random = new Random();
-            int millis = (random.nextInt(70)+1) * 100;
-            int millis2 = (random.nextInt(70)+1) * 100;
+            int millis = (random.nextInt(10)+1) * 100;
+            int millis2 = (random.nextInt(10)+1) * 100;
 
             Thread.sleep(millis);
             if (m2AtCafe) {
