@@ -24,6 +24,7 @@ public class Member {
     Boolean instantRes;
     Boolean consensusReached;
     Propose proposeTimeout;
+    Boolean test;
 
 
     Member(Boolean wantsPresidency, int chancesOfResponse, int responseDelay, String name, int majority, Boolean instantRes) {
@@ -39,6 +40,7 @@ public class Member {
         this.instantRes = instantRes;
         consensusReached = false;
         proposeTimeout = null;
+        test = false;
         // System.out.println(name + " created");
     }
 
@@ -52,7 +54,7 @@ public class Member {
 
     public void Prepare() throws Exception {
        if (wantsPresidency && !consensusReached){
-            if (willRespond() || instantRes) {
+            if (willRespond() || instantRes || test) {
                 if (!instantRes) {
                     causeDelay();
                 }
@@ -292,5 +294,9 @@ public class Member {
     public void fromWoods() {
     }
     public void toWoods() {
+    }
+
+    public void setTest() {
+        test = true;
     }
 }

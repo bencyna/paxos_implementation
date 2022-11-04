@@ -12,12 +12,7 @@ public class AlternateMemberResponses extends Thread {
         this.M3 = M3;
         m2AtCafe = false;
         m3InWoods = false;
-        if (instantRes) {
-            end = true;
-        }
-        else {
-            end = false;
-        }
+        end = instantRes;
     }
     
     public void end() {
