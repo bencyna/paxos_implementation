@@ -48,7 +48,8 @@ public class PaxosImplementation extends Thread {
             id = Integer.parseInt(value.split("id: ")[1]);
             value = value.split("id: ")[0];
 
-            System.out.println(value + " sending out voting proposal id: " + id);
+
+            // System.out.println(value + " sending out voting proposal id: " + id);
 
             for (MemberThread memberThread : members) {
                 String acceptorRes = memberThread.member.AcceptProposal(value, id);
@@ -69,16 +70,17 @@ public class PaxosImplementation extends Thread {
 
         } else {
             synchronized (this) {
-                System.out.println(value + " updating id (sending proposal right?)");
+                // System.out.println(value + " updating id (sending proposal right?)");
                 BufferedReader currentID = new BufferedReader(new FileReader("currentID.txt"));
                 id = Integer.parseInt(currentID.readLine()) + 1;
                 FileWriter f2 = new FileWriter("currentID.txt", false);
                 f2.write(Integer.toString(id));
                 f2.close();
                 currentID.close();
-                printStats();
-
+                // printStats();
             }
+            // printStats();
+
             MemberThread proposer = null;
 
             for (MemberThread memberThread : members) {

@@ -32,20 +32,24 @@ def testA3():
 
     sleepCount = 0
     outcome = " "
-    while (outcome == " "):
+    while (True):
         if (sleepCount >= 60):
             print("been about a minute, timing out...")
             break
         
         with open("./consensusValue.txt") as output:
             outcome = output.readline()
+            time.sleep(1)
+            sleepCount += 1
+            if (outcome == " "):
+                continue
+
             print(f"outcome: {outcome}")
             if (outcome == "Member M1" or outcome == "Member M2" or outcome == "Member M3"):
                 print("test case passed outcome: " + outcome)
             else:
                 print("test case failed!")
-        time.sleep(1)
-        sleepCount += 1
+            break
 
     paxos.terminate()
 
@@ -61,24 +65,28 @@ def testM3Failure():
 
     sleepCount = 0
     outcome = " "
-    while (outcome == " "):
+    while (True):
         if (sleepCount >= 60):
             print("been about a minute, timing out...")
             break
         
         with open("./consensusValue.txt") as output:
             outcome = output.readline()
+            time.sleep(1)
+            sleepCount += 1
+            if (outcome == " "):
+                continue
+
             print(f"outcome: {outcome}")
             if (outcome == "Member M1"):
                 print("test case passed outcome: " + outcome)
             else:
                 print("test case failed!")
-        time.sleep(1)
-        sleepCount += 1
+            break
 
     paxos.terminate()
 
     
 # testInstant()
-# testA3()
-testM3Failure()
+testA3()
+# testM3Failure()

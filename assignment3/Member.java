@@ -91,7 +91,7 @@ public class Member {
                 proposeTimeout.setResponseTrue();
             }
             this.maxIDAccepted = ID;
-            System.out.println(getName() + " accepted 1");
+            // System.out.println(getName() + " accepted 1");
             return "Accept " + ID +", " + value;
     }
 
@@ -158,14 +158,14 @@ public class Member {
             idFoundIndex = idArr.size()-1;
         }
 
-        for (int k = 0; k < countArr.size(); k++) {
-            System.out.println("acceptedPrep: " + getName() +": countARR: " + k + " " + countArr.get(k));
-            System.out.println("acceptedPrep: " + getName() +" idARR: " + k + " " + idArr.get(k));
+        // for (int k = 0; k < countArr.size(); k++) {
+        //     System.out.println("acceptedPrep: " + getName() +": countARR: " + k + " " + countArr.get(k));
+        //     System.out.println("acceptedPrep: " + getName() +" idARR: " + k + " " + idArr.get(k));
             
-            for (int j = 0; j < valueArr.get(k).size(); j++) {
-                System.out.println("acceptedPrep: " + getName() +": value: " + k + "inside: " + j + " "  + valueArr.get(k).get(j));
-            }
-        }
+        //     for (int j = 0; j < valueArr.get(k).size(); j++) {
+        //         System.out.println("acceptedPrep: " + getName() +": value: " + k + "inside: " + j + " "  + valueArr.get(k).get(j));
+        //     }
+        // }
 
         if (countArr.get(idFoundIndex) >= majority) {
             String finalValue = null;
@@ -203,7 +203,7 @@ public class Member {
             Socket s2 = new Socket("localhost", 5432);
             DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
             dout2.writeUTF(finalValue + " id: " + idArr.get(idFoundIndex));  
-            System.out.println("about to send proposal with id: " + idArr.get(idFoundIndex));
+            // System.out.println("about to send proposal with id: " + idArr.get(idFoundIndex));
             s2.close();
             }
         }
@@ -221,7 +221,7 @@ public class Member {
             this.acceptedID = ID;
             acceptedValue = value;
 
-            System.out.println(getName() + " accepting a member (can't accept no one else)");
+            // System.out.println(getName() + " accepting a member (can't accept no one else)");
             // send accepted to all proposers and learners
             return "accepted " + ID;
         }
