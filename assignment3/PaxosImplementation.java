@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class PaxosImplementation extends Thread {
@@ -31,6 +32,11 @@ public class PaxosImplementation extends Thread {
         System.out
         .println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
         printStats();
+
+        PrintWriter writer = new PrintWriter("consensusValue.txt", "UTF-8");
+        writer.print(value.trim());
+        writer.close();
+        // System.out.println("hello");
         Thread.interrupted();
     }
       
