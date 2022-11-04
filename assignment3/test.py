@@ -55,7 +55,7 @@ def testA3():
 
 
 def testM3Failure():
-    print("running A3 outline test: outcome expected 1 of M1 - M2 and M3 will go offline after proposing so they won't be able to get to phase 2")
+    print("running A3 outline test: outcome expected 1 of M1, M2, and M3 - M2 and M3 will go offline after proposing so they won't be able to get to phase 2, however, they can be restarted and respond after intitial offline")
     f = open("consensusValue.txt", "w")
     f.write(" ")
     f.close()
@@ -78,7 +78,7 @@ def testM3Failure():
                 continue
 
             print(f"outcome: {outcome}")
-            if (outcome == "Member M1"):
+            if (outcome == "Member M1" or outcome == "Member M2" or outcome == "Member M3"):
                 print("test case passed outcome: " + outcome)
             else:
                 print("test case failed!")
@@ -87,6 +87,6 @@ def testM3Failure():
     paxos.terminate()
 
     
-# testInstant()
+testInstant()
 testA3()
-# testM3Failure()
+testM3Failure()

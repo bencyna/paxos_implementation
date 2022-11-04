@@ -41,7 +41,6 @@ public class Member {
         consensusReached = false;
         proposeTimeout = null;
         test = false;
-        // System.out.println(name + " created");
     }
 
     public String getName() {
@@ -77,21 +76,17 @@ public class Member {
                 return "fail";
             }
             if (maxIDAccepted >= ID) {
-                // System.out.println(getName() + " seen an ID: " + maxIDAccepted + " larger than currentID: " + ID);
 
                 return "fail";
             }
             if (proposalAccepted) {
                 this.maxIDAccepted = ID;
-                // System.out.println(getName() + " already accepted a previous option currentID: " + ID + " accepted ID: " + acceptedID);
                 return "Accept " + ID + " accepted id = " + acceptedID + " accepted value: " + acceptedValue;
             }
             if (proposeTimeout != null) {
-                // System.out.println("response to true");
                 proposeTimeout.setResponseTrue();
             }
             this.maxIDAccepted = ID;
-            // System.out.println(getName() + " accepted 1");
             return "Accept " + ID +", " + value;
     }
 
@@ -131,7 +126,6 @@ public class Member {
                 break;
             }
         }
-        // System.out.println("acceptPrep: idFoundINdex: "+ idFoundIndex );
 
         if (idFoundIndex >= 0) {
             Boolean match = false;
@@ -158,15 +152,6 @@ public class Member {
             idFoundIndex = idArr.size()-1;
         }
 
-        // for (int k = 0; k < countArr.size(); k++) {
-        //     System.out.println("acceptedPrep: " + getName() +": countARR: " + k + " " + countArr.get(k));
-        //     System.out.println("acceptedPrep: " + getName() +" idARR: " + k + " " + idArr.get(k));
-            
-        //     for (int j = 0; j < valueArr.get(k).size(); j++) {
-        //         System.out.println("acceptedPrep: " + getName() +": value: " + k + "inside: " + j + " "  + valueArr.get(k).get(j));
-        //     }
-        // }
-
         if (countArr.get(idFoundIndex) >= majority) {
             String finalValue = null;
             ArrayList<String> valuesSaved = valueArr.get(idFoundIndex);
@@ -185,25 +170,21 @@ public class Member {
             if (finalValue == null) {
                 finalValue = name;
             }
-            System.out.println("final value: maj reached!: " + finalValue);
 
             // propose id again to acceptors if I haven't already sent a proposal out with this id
             Boolean sentBefore = false;
             for (int i = 0; i < proposalIdsSent.size(); i++) {
                 if (proposalIdsSent.get(i) ==  idArr.get(idFoundIndex)) {
                     sentBefore = true;
-                    System.out.println(proposalIdsSent.get(i) + " sent before");
                     break;
                 }
             }
             // and majority of accepts on this id 
             if (!sentBefore) {
-            // System.out.println("about to send out 2nd proposal value: " + finalValue + " id: " + idArr.get(idFoundIndex));
             proposalIdsSent.add(idArr.get(idFoundIndex));
             Socket s2 = new Socket("localhost", 5432);
             DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
             dout2.writeUTF(finalValue + " id: " + idArr.get(idFoundIndex));  
-            // System.out.println("about to send proposal with id: " + idArr.get(idFoundIndex));
             s2.close();
             }
         }
@@ -221,7 +202,6 @@ public class Member {
             this.acceptedID = ID;
             acceptedValue = value;
 
-            // System.out.println(getName() + " accepting a member (can't accept no one else)");
             // send accepted to all proposers and learners
             return "accepted " + ID;
         }
@@ -246,9 +226,6 @@ public class Member {
             idFoundIndex = acceptIdArr.size()-1;
         }
 
-        // for (int i = 0; i < acceptIdArr.size(); i++) {
-        //     System.out.println(name + "accepted dets: id: " + acceptIdArr.get(i) + " count: " + acceptCountArr.get(i) + " I: " + i);
-        // }
         // cant just be accept count because it may be a new id
         if (acceptCountArr.get(idFoundIndex) >= majority && !consensusReached) {
             return true;

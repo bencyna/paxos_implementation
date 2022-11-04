@@ -28,6 +28,7 @@ public class PaxosImplementation extends Thread {
         alt.end();
         for (MemberThread memberThread : members) {
             memberThread.member.setConsensus();
+            memberThread.setConsensus();
         }
         System.out
         .println("Consensus Reached Woohoo!!! ID: " + acceptedId + " and value: " + value);
@@ -49,8 +50,6 @@ public class PaxosImplementation extends Thread {
             value = value.split("id: ")[0];
 
 
-            // System.out.println(value + " sending out voting proposal id: " + id);
-
             for (MemberThread memberThread : members) {
                 String acceptorRes = memberThread.member.AcceptProposal(value, id);
                 if (acceptorRes.equals("fail")) {
@@ -70,16 +69,13 @@ public class PaxosImplementation extends Thread {
 
         } else {
             synchronized (this) {
-                // System.out.println(value + " updating id (sending proposal right?)");
                 BufferedReader currentID = new BufferedReader(new FileReader("currentID.txt"));
                 id = Integer.parseInt(currentID.readLine()) + 1;
                 FileWriter f2 = new FileWriter("currentID.txt", false);
                 f2.write(Integer.toString(id));
                 f2.close();
                 currentID.close();
-                // printStats();
             }
-            // printStats();
 
             MemberThread proposer = null;
 
@@ -89,12 +85,10 @@ public class PaxosImplementation extends Thread {
                     break;
                 }
             }
-            // System.out.println(proposer.member.getName() + " sending out initial prepare. id: " + id);
             for (MemberThread memberThread : members) {
                 if (!memberThread.member.getName().equals(proposer.getName())) {
                     String acceptorRes = memberThread.member.Accept(value, id);
                     if (proposer != null && !acceptorRes.equals("fail")) {
-                        // System.out.println(memberThread.member.getName() + " about to send to acceptorPrep: " + acceptorRes);
                         proposer.member.AcceptedPrep(acceptorRes);
                     }
                 }
