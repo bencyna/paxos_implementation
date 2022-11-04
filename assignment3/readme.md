@@ -9,7 +9,7 @@ Major design decision.
 ## Compile and run instructions for linux 
 compile:
 ```
-javac Member.java Paxos.java PaxosImplementation.java M1.java M2.java M3.java M4.java
+javac Member.java Paxos.java PaxosImplementation.java M1.java M2.java M3.java M4.java ProposalThread.java
 ```
 start server  
 

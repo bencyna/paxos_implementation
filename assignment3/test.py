@@ -5,7 +5,7 @@ import os
 import glob
 
 def testInstant():
-    print("running instant response time test: outcome typically m1 as it is created first, can be both m2 and m3 too")
+    print("\nrunning instant response time test: outcome typically m1 as it is created first, can be both m2 and m3 too\n")
     f = open("consensusValue.txt", "w")
     f.write(" ")
     f.close()
@@ -15,14 +15,14 @@ def testInstant():
 
     with open("./consensusValue.txt") as output:
         outcome = output.readline()
-        print(f"outcome: {outcome}")
+        print(f"\noutcome: {outcome}")
         if (outcome == "Member M1" or outcome == "Member M2" or outcome == "Member M3"):
             print("test case passed outcome: " + outcome)
 
     paxos.terminate()
 
 def testA3():
-    print("running A3 outline test: outcome expected 1 of M1, M2 or M3 still")
+    print("\nrunning A3 outline test: outcome expected 1 of M1, M2 or M3 still\n")
     f = open("consensusValue.txt", "w")
     f.write(" ")
     f.close()
@@ -34,7 +34,7 @@ def testA3():
     outcome = " "
     while (True):
         if (sleepCount >= 60):
-            print("been about a minute, timing out...")
+            print("\nbeen about a minute, timing out...\n")
             break
         
         with open("./consensusValue.txt") as output:
@@ -44,7 +44,7 @@ def testA3():
             if (outcome == " "):
                 continue
 
-            print(f"outcome: {outcome}")
+            print(f"\noutcome: {outcome}")
             if (outcome == "Member M1" or outcome == "Member M2" or outcome == "Member M3"):
                 print("test case passed outcome: " + outcome)
             else:
@@ -55,7 +55,7 @@ def testA3():
 
 
 def testM3Failure():
-    print("running A3 outline test: outcome expected 1 of M1, M2, and M3 - M2 and M3 will go offline after proposing so they won't be able to get to phase 2, however, they can be restarted and respond after intitial offline")
+    print("\nrunning A3 outline test: outcome expected 1 of M1, M2, and M3 - M2 and M3 will go offline after proposing so they won't be able to get to phase 2, however, they can be restarted and respond after intitial offline\n")
     f = open("consensusValue.txt", "w")
     f.write(" ")
     f.close()
@@ -77,7 +77,7 @@ def testM3Failure():
             if (outcome == " "):
                 continue
 
-            print(f"outcome: {outcome}")
+            print(f"\noutcome: {outcome}")
             if (outcome == "Member M1" or outcome == "Member M2" or outcome == "Member M3"):
                 print("test case passed outcome: " + outcome)
             else:

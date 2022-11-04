@@ -21,10 +21,8 @@ public class Propose extends Thread {
             {
                 Thread.sleep(1000);
                 timeout--;
-                // System.out.println("timeout = " + timeout);
             }
             if (!done) {
-                // System.out.println("about to send another prepare in thread: " + member.getName());
                 member.Prepare();
             }
         }
