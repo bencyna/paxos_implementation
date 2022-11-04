@@ -7,13 +7,13 @@ public class M2 extends Member {
     public void toCafe() {
         responseDelay = 0;
         chancesOfResponse = 50;
-        System.out.println("m2 to cafe");
+        // System.out.println("m2 to cafe");
 
     }
     public void fromCafe() {
         responseDelay = 2000;
         chancesOfResponse = 100;
-        System.out.println("m2 from cafe");
+        // System.out.println("m2 from cafe");
 
     }
 }

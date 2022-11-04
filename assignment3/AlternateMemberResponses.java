@@ -7,12 +7,17 @@ public class AlternateMemberResponses extends Thread {
     Boolean m3InWoods;
     Boolean end;
 
-    AlternateMemberResponses(Member M2, Member M3) {
+    AlternateMemberResponses(Member M2, Member M3, Boolean instantRes) {
         this.M2 = M2;
         this.M3 = M3;
         m2AtCafe = false;
         m3InWoods = false;
-        end = false;
+        if (instantRes) {
+            end = true;
+        }
+        else {
+            end = false;
+        }
     }
     
     public void end() {

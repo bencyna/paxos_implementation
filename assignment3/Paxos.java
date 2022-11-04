@@ -34,7 +34,7 @@ public class Paxos {
 
         Thread.sleep(500);
         
-        AlternateMemberResponses alt = new AlternateMemberResponses(M2.member, M3.member);
+        AlternateMemberResponses alt = new AlternateMemberResponses(M2.member, M3.member, instantRes);
         alt.start();
 
         PaxosImplementation runPaxos = new PaxosImplementation(members, alt);
@@ -54,29 +54,19 @@ public class Paxos {
     public static void main(String[] args) {
         try {
             int numOfMembers;
-            System.out.println(
-                    "How many members do you want? Type \"default\" for the 9 classic members stipulated in assignment 3");
-
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(System.in));
-
+          
             // Reading data using readLine
-            String input = reader.readLine();
-            System.out.println("input: " + input);
+            String input = args[0];
             if (!input.matches("\\d+")) {
                 if (input.equals("default")) {
-                    System.out.println(
-                            "Do you want all responses to be instant (y)? Alternativley, type N for the members to match the assignment 3 description");
-                    String instantResInput = reader.readLine();
-                    if (instantResInput.equals("Y") || instantResInput.equals("y") || instantResInput.equals("yes")
-                            || instantResInput.equals("Yes")) {
+                    String instantResInput = args[1];
+                    if (instantResInput.equals("true")) {
                         defaultRun(true);
                     } else {
                         defaultRun(false);
                     }
                 } else {
-                    System.out.println("Please enter digits only e.g. 21");
-                    main(args);
+                    System.out.println("invalid argument - refer to");
                 }
                 return;
             }

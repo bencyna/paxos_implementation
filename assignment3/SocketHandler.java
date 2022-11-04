@@ -17,7 +17,6 @@ public class SocketHandler extends Thread {
 
             String value = "";
             value = din.readUTF();
-
             paxos.newProposal(value);
             socket.close();
         } catch (Exception e) {

@@ -39,7 +39,7 @@ public class Member {
         this.instantRes = instantRes;
         consensusReached = false;
         proposeTimeout = null;
-        System.out.println(name + " created");
+        // System.out.println(name + " created");
     }
 
     public String getName() {
@@ -75,21 +75,21 @@ public class Member {
                 return "fail";
             }
             if (maxIDAccepted >= ID) {
-                System.out.println(getName() + " seen an ID: " + maxIDAccepted + " larger than currentID: " + ID);
+                // System.out.println(getName() + " seen an ID: " + maxIDAccepted + " larger than currentID: " + ID);
 
                 return "fail";
             }
             if (proposalAccepted) {
                 this.maxIDAccepted = ID;
-                System.out.println(getName() + " already accepted a previous option currentID: " + ID + " accepted ID: " + acceptedID);
+                // System.out.println(getName() + " already accepted a previous option currentID: " + ID + " accepted ID: " + acceptedID);
                 return "Accept " + ID + " accepted id = " + acceptedID + " accepted value: " + acceptedValue;
             }
             if (proposeTimeout != null) {
-                System.out.println("response to true");
+                // System.out.println("response to true");
                 proposeTimeout.setResponseTrue();
             }
             this.maxIDAccepted = ID;
-            System.out.println(getName() + "accepted ID: " + ID + " value:" + value);
+            // System.out.println(getName() + "accepted ID: " + ID + " value:" + value);
 
             return "Accept " + ID +", " + value;
     }
@@ -194,7 +194,7 @@ public class Member {
             }
             // and majority of accepts on this id 
             if (!sentBefore) {
-            System.out.println("about to send out 2nd proposal value: " + finalValue + " id: " + idArr.get(idFoundIndex));
+            // System.out.println("about to send out 2nd proposal value: " + finalValue + " id: " + idArr.get(idFoundIndex));
             proposalIdsSent.add(idArr.get(idFoundIndex));
             Socket s2 = new Socket("localhost", 5432);
             DataOutputStream dout2=new DataOutputStream(s2.getOutputStream());  
@@ -282,15 +282,11 @@ public class Member {
     }
 
     public void toCafe() {
-        System.out.println("wrong toCafe");
     }
     public void fromCafe() {
-        System.out.println("wrong fromCafe");
     }
     public void fromWoods() {
-        System.out.println("wrong towoods");
     }
     public void toWoods() {
-        System.out.println("wrong fromwoods");
     }
 }

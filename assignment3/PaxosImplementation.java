@@ -42,7 +42,7 @@ public class PaxosImplementation extends Thread {
             id = Integer.parseInt(value.split("id: ")[1]);
             value = value.split("id: ")[0];
 
-            System.out.println(value + " sending out voting proposal id: " + id);
+            // System.out.println(value + " sending out voting proposal id: " + id);
 
             for (MemberThread memberThread : members) {
                 String acceptorRes = memberThread.member.AcceptProposal(value, id);
@@ -78,12 +78,12 @@ public class PaxosImplementation extends Thread {
                     break;
                 }
             }
-            System.out.println(proposer.member.getName() + " sending out initial prepare. id: " + id);
+            // System.out.println(proposer.member.getName() + " sending out initial prepare. id: " + id);
             for (MemberThread memberThread : members) {
                 if (!memberThread.member.getName().equals(proposer.getName())) {
                     String acceptorRes = memberThread.member.Accept(value, id);
                     if (proposer != null && !acceptorRes.equals("fail")) {
-                        System.out.println(memberThread.member.getName() + " about to send to acceptorPrep: " + acceptorRes);
+                        // System.out.println(memberThread.member.getName() + " about to send to acceptorPrep: " + acceptorRes);
                         proposer.member.AcceptedPrep(acceptorRes);
                     }
                 }

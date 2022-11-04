@@ -5,11 +5,11 @@ public class M3 extends Member {
 
     public void fromWoods() {
         chancesOfResponse = 100;
-        System.out.println("m3 from woods");
+        // System.out.println("m3 from woods");
     }
 
     public void toWoods() {
-        System.out.println("m3 to woods");
+        // System.out.println("m3 to woods");
         chancesOfResponse = 0;
     }
 }
