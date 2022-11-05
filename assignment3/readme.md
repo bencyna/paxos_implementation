@@ -1,7 +1,7 @@
 # PAXOS Assignment 3 Distributed Systems 
 
-## Overveiw
-Major design decision. 
+## Major design decisions
+To ensure failures still manage to reach conensus, as long as one proposer remains online, a new proposal can be sent after a timeout. If a proposer sends a prepare and then dies, it cannot enter phase 2, so cannot be elected. 
 
 
 
@@ -24,6 +24,11 @@ to run the default m1-m9 according to their member profiles outlined in assignme
 java Paxos default false
 ```
 
+and to run the paxos implementation with failures use this command: 
+```
+java Paxos failure
+```
+
 
 
 ## Testing instructions
@@ -33,7 +38,7 @@ it covers the memeber outlines typical random case
 
 and it covers the case where m1 and m2 propose and go offline. 
 
-to execute the tests, run this command 
+to execute the tests first ensure you have compiled the program, then run this command 
 ```
 python3 test.py 
 ```
