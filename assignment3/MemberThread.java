@@ -1,6 +1,5 @@
 public class MemberThread extends Thread {
     public Member member;
-
     Boolean wantsPresidency;
     int chancesOfResponse;
     int responseDelay;

@@ -15,6 +15,7 @@ public class Paxos {
         M2.start();
         MemberThread M3 = new MemberThread("M3", true, 100, 0, 5, instantRes, 0);
         M3.start();
+        
         Random random = new Random();
 
         MemberThread M4 = new MemberThread("citizen", false, 100, random.nextInt(300), 5, instantRes, 1);
