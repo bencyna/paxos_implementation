@@ -85,7 +85,7 @@ public class PaxosImplementation extends Thread {
                     break;
                 }
             }
-            for (MemberThread memberThread : members) {
+            for (MemberThread memberThread : members) { 
                 if (!memberThread.member.getName().equals(proposer.getName())) {
                     String acceptorRes = memberThread.member.Accept(value, id);
                     if (proposer != null && !acceptorRes.equals("fail")) {
