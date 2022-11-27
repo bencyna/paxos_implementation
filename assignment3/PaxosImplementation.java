@@ -90,7 +90,7 @@ public class PaxosImplementation extends Thread {
                     String acceptorRes = memberThread.member.Accept(value, id);
                     if (proposer != null && !acceptorRes.equals("fail")) {
                         proposer.member.AcceptedPrep(acceptorRes);
-                    }
+                    } 
                 }
             }
         }
