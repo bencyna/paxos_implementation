@@ -80,7 +80,7 @@ public class PaxosImplementation extends Thread {
             MemberThread proposer = null;
 
             for (MemberThread memberThread : members) {
-                if (memberThread.member.getName().equals(value)) {
+                if (memberThread.member.getName().equals(value)) { 
                     proposer = memberThread;
                     break; 
                 }
